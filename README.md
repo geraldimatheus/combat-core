@@ -119,7 +119,7 @@ CombatCore/
 
 ---
 
-##🔮 Melhorias futuras
+## 🔮 Melhorias futuras
 - Sistema de inventário
 - Sistema de mana
 - IA para inimigos
