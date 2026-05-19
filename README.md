@@ -85,7 +85,7 @@ CombatCore/
 ├── Program.cs
 ├── CombatCore.csproj
 └── README.md
-
+```
 ---
 
 ## 🚀 Como executar
@@ -94,13 +94,15 @@ CombatCore/
 - .NET SDK instalado
 
 ### Clonando o projeto
-
 ```bash
 - git clone https://github.com/SEU-USUARIO/CombatCore.git
+```
 
 ### Executando
+```bash
 - cd CombatCore
 - dotnet run
+```
 
 ---
 
