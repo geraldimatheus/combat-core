@@ -95,7 +95,7 @@ CombatCore/
 
 ### Clonando o projeto
 ```bash
-- git clone https://github.com/SEU-USUARIO/CombatCore.git
+- git clone https://github.com/geraldimatheus/CombatCore.git
 ```
 
 ### Executando
