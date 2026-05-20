@@ -3,11 +3,18 @@ using System.Collections.Generic;
 using System.Text;
 using CombatCore.Effects;
 using CombatCore.Skills;
+using CombatCore.Skills.ArrowSkills;
+using CombatCore.Skills.MagicSkills;
+using CombatCore.Skills.SwordSkills;
 using CombatCore.Actions;
+using CombatCore.Actions.WarriorActions;
+using CombatCore.Actions.MageActions;
+using CombatCore.Actions.ArcherActions;
+
 
 namespace CombatCore
 {
-    class Character
+    abstract class Character
     {
         private string? name;
         public string? Name
@@ -51,7 +58,7 @@ namespace CombatCore
             get { return actions; }
         }
 
-        private List<ISkill> skills;
+        private List<ISkill> skills = new List<ISkill>();
         public List<ISkill> Skills
         {
             get { return skills; }
@@ -62,9 +69,11 @@ namespace CombatCore
             Name = name;
             maxHP = maxHP < 0 ? 1 : maxHP;
             hp = maxHP;
+
             actions = new List<IAction>();
             effects = new List<IEffect>();
             skills = new List<ISkill>();
+
         }
         public void ReceiveDamage(int damage)
         {

@@ -1,42 +1,39 @@
-﻿using System;
+﻿using CombatCore.Effects;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using CombatCore.Actions;
-using CombatCore.Effects;
 
-namespace CombatCore.Skills
+namespace CombatCore.Skills.ArrowSkills
 {
-    class PoisonSwordAttack : IAction
+    class PoisonArrow : ISkill
     {
         private static Random rand = new Random();
-        public (int damage, int heal, string message, string? effectMessage) Action(Character attacker, Character target)
+        public (int damage, string message, string? effectMessage) Skill(Character attacker, Character target)
         {
+            string message;
+            string? effectMessage = null;
             int attack = attacker.Attack;
 
             List<IEffect> effects = target.Effects;
-
-            string message;
-            string? effectMessage = null;
             bool miss = rand.Next(0, 100) < 10;
             if (miss)
             {
                 message = $"{attacker.Name} errou o ataque!";
-                return (0, 0, message, effectMessage);
+                return (0, message, effectMessage);
             }
             IEffect effect = new PoisonEffect();
             effects.Add(effect);
             effectMessage = $"{target.Name} foi envenenado!";
-            int damage = attack + 5;
-            bool crit = rand.Next(0, 100) < 25;
-
+            int damage = attack;
+            bool crit = rand.Next(0, 100) < 10;
             if (crit)
             {
                 message = $"{attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage} de dano!";
-                return (damage * 2, 0, message, effectMessage);
+                return (damage * 2, message, effectMessage);
             }
 
             message = $"{attacker.Name} atacou causando {damage} de dano em {target.Name}!";
-            return (damage, 0, message, effectMessage);
+            return (damage, message, effectMessage);
         }
 
     }

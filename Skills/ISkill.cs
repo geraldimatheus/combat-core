@@ -4,7 +4,8 @@ using System.Text;
 
 namespace CombatCore.Skills
 {
-    internal interface ISkill
+    interface ISkill
     {
+        public (int damage, string message, string? effectMessage) Skill(Character attacker, Character target);
     }
 }
