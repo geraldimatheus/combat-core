@@ -69,6 +69,7 @@ namespace CombatCore
             Name = name;
             maxHP = maxHP < 0 ? 1 : maxHP;
             hp = maxHP;
+            this.attack = attack;
 
             actions = new List<IAction>();
             effects = new List<IEffect>();

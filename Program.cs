@@ -91,14 +91,17 @@ void Turn(Character attacker, Character target, ISkill? skill, IAction? action)
     switch (int.Parse(input))
     {
         case 1:
+            IAction action = player.Actions[0];
+            return (null, action);
+        case 2:
             do
             {
                 for (int i = 0; i < player.Skills.Count; i++)
                     Console.WriteLine($"{i + 1} - {player.Skills[i]}");
-                
+
                 Console.WriteLine($"{player.Name}, qual skill você quer usar?");
                 choose = Console.ReadLine();
-                
+
                 if (string.IsNullOrWhiteSpace(choose))
                 {
                     Console.WriteLine("Entrada inválida! O campo não pode ser nulo ou vazio.");
@@ -119,9 +122,6 @@ void Turn(Character attacker, Character target, ISkill? skill, IAction? action)
             ISkill skill = player.Skills[number - 1];
             return (skill, null);
 
-        case 2:
-            IAction action = player.Actions[0];
-            return (null, action);
         default:
             Console.WriteLine("Erro, tente novamente.");
             return (null, null);
