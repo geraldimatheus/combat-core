@@ -11,7 +11,7 @@ namespace CombatCore.Classes
         public Mage(string name)
             : base(name, 85, 35)
         {
-            Actions.Add(new MageAttack());
+            basicAttack = new MageAttack();
 
             Skills.Add(new MagicFire());
             Skills.Add(new MagicPoison());

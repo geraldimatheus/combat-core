@@ -8,6 +8,8 @@ namespace CombatCore.Skills.SwordSkills
 {
     class PoisonSword : ISkill
     {
+        public string Name { get { return "Espada venenosa"; } }
+
         private static Random rand = new Random();
         public (int damage, string message, string? effectMessage) Skill(Character attacker, Character target)
         {

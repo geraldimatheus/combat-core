@@ -11,7 +11,7 @@ namespace CombatCore.Classes
         public Archer(string name)
             : base(name, 100, 30)
         {
-            Actions.Add(new ArcherAttack());    
+            basicAttack = new ArcherAttack();    
 
             Skills.Add(new FireArrow());
             Skills.Add(new PoisonArrow());

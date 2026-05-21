@@ -8,6 +8,7 @@ namespace CombatCore.Skills.SwordSkills
 {
     class StunSword : ISkill
     {
+        public string Name { get { return "Espada atordoante"; } }
 
         private static Random rand = new Random();
         public (int damage, string message, string? effectMessage) Skill(Character attacker, Character target)

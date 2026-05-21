@@ -91,13 +91,13 @@ void Turn(Character attacker, Character target, ISkill? skill, IAction? action)
     switch (int.Parse(input))
     {
         case 1:
-            IAction action = player.Actions[0];
+            IAction action = player.basicAttack;
             return (null, action);
         case 2:
             do
             {
-                for (int i = 0; i < player.Skills.Count; i++)
-                    Console.WriteLine($"{i + 1} - {player.Skills[i]}");
+                foreach (ISkill skill in player.Skills)
+                    Console.WriteLine(skill.Name);
 
                 Console.WriteLine($"{player.Name}, qual skill você quer usar?");
                 choose = Console.ReadLine();
@@ -119,8 +119,8 @@ void Turn(Character attacker, Character target, ISkill? skill, IAction? action)
             while (string.IsNullOrWhiteSpace(choose) || int.Parse(choose) < 1 || int.Parse(choose) > (player.Skills.Count));
 
             number = int.Parse(choose);
-            ISkill skill = player.Skills[number - 1];
-            return (skill, null);
+            var choosenSkill = player.Skills[number - 1];
+            return (choosenSkill, null);
 
         default:
             Console.WriteLine("Erro, tente novamente.");

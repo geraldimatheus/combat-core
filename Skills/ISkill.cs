@@ -6,6 +6,7 @@ namespace CombatCore.Skills
 {
     interface ISkill
     {
+        string Name { get; }
         public (int damage, string message, string? effectMessage) Skill(Character attacker, Character target);
     }
 }

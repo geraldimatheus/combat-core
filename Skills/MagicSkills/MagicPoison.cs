@@ -7,6 +7,8 @@ namespace CombatCore.Skills.MagicSkills
 {
     class MagicPoison : ISkill
     {
+        public string Name { get { return "Gás venenoso"; } }
+
         private static Random rand = new Random();
         public (int damage, string message, string? effectMessage) Skill(Character attacker, Character target)
         {

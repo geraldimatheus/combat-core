@@ -7,6 +7,8 @@ namespace CombatCore.Skills.MagicSkills
 {
     class MagicFire : ISkill
     {
+        public string Name { get { return "Fogo ardente"; } }
+
         private static Random rand = new Random();
         public (int damage, string message, string? effectMessage) Skill(Character attacker, Character target)
         {

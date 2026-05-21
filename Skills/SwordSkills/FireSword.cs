@@ -8,6 +8,8 @@ namespace CombatCore.Skills.SwordSkills
 {
     class FireSword : ISkill
     {
+        public string Name { get { return "Espada flamejante"; }  }
+
         private static Random rand = new Random();
         public (int damage, string message, string? effectMessage) Skill(Character attacker, Character target)
         {

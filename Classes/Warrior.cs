@@ -11,7 +11,7 @@ namespace CombatCore.Classes
         public Warrior(string name)
             : base(name, 115, 20)
         {
-            Actions.Add(new WarriorAttack());
+            basicAttack = new WarriorAttack();
 
             Skills.Add(new FireSword());
             Skills.Add(new PoisonSword());

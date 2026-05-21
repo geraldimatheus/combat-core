@@ -7,6 +7,8 @@ namespace CombatCore.Skills.ArrowSkills
 {
     class FireArrow : ISkill
     {
+        public string Name { get { return "Flecha flamejante"; } }
+
         private static Random rand = new Random();
         public (int damage, string message, string? effectMessage) Skill(Character attacker, Character target)
         {
