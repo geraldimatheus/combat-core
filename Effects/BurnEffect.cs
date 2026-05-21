@@ -10,7 +10,7 @@ namespace CombatCore.Effects
         public (int turns, int heal, string message) EffectAction(Character target)
         {
             int damage = ((target.MaxHP * 5) / 100);
-            string message = $"{target.Name} está queimando por {turns} rodadas! Sofreu {damage} de dano.";
+            string message = $"🔥 {target.Name} está queimando por {turns} rodadas! Sofreu {damage} de dano.";
             target.ReceiveDamage(damage);
             turns--;
 

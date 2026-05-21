@@ -10,7 +10,7 @@ namespace CombatCore.Effects
         {
             int heal = 30;
 
-            string message = $"{target.Name} se curou em {heal} pontos de vida.";
+            string message = $"❤️ {target.Name} se curou em {heal} pontos de vida.";
             return (0, heal, message);
         }
     }

@@ -33,7 +33,7 @@ namespace CombatCore.Skills.SwordSkills
 
             if (crit)
             {
-                message = $"{attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage} de dano!";
+                message = $"💥 {attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage * 2} de dano!";
                 return (damage * 2, message, effectMessage);
             }
 

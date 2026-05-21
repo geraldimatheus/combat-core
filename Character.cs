@@ -1,23 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CombatCore.Actions;
+using CombatCore.Actions.ArcherActions;
+using CombatCore.Actions.MageActions;
+using CombatCore.Actions.WarriorActions;
+using CombatCore.Classes;
 using CombatCore.Effects;
 using CombatCore.Skills;
 using CombatCore.Skills.ArrowSkills;
 using CombatCore.Skills.MagicSkills;
 using CombatCore.Skills.SwordSkills;
-using CombatCore.Actions;
-using CombatCore.Actions.WarriorActions;
-using CombatCore.Actions.MageActions;
-using CombatCore.Actions.ArcherActions;
+using System;
+using System.Collections.Generic;
+using System.Numerics;
+using System.Text;
 
 
 namespace CombatCore
 {
     abstract class Character
     {
-        private string? name;
-        public string? Name
+        private string name;
+        public string Name
         {
             get { return name; }
             set {
@@ -52,7 +54,7 @@ namespace CombatCore
             get { return effects; }
         }
 
-        public IAction basicAttack;
+        public IAction? basicAttack;
 
         private List<ISkill> skills = new List<ISkill>();
         public List<ISkill> Skills
@@ -62,8 +64,10 @@ namespace CombatCore
 
         public Character(string name, int maxHP, int attack)
         {
+            this.name = name;
             Name = name;
             maxHP = maxHP < 0 ? 1 : maxHP;
+            this.maxHP = maxHP;
             hp = maxHP;
             this.attack = attack;
 
@@ -95,7 +99,24 @@ namespace CombatCore
     
         public void ShowStatus()
         {
-            Console.WriteLine($"Personagem: {Name} - HP:{HP}");
+            if (basicAttack is WarriorAttack)
+            {
+                Console.WriteLine("==============================");
+                Console.WriteLine($"⚔️ {Name} - HP: {HP}/{MaxHP}");
+                Console.WriteLine("==============================");
+            }
+            else if (basicAttack is ArcherAttack)
+            {
+                Console.WriteLine("==============================");
+                Console.WriteLine($"🏹 {Name} - HP: {HP}/{MaxHP}");
+                Console.WriteLine("==============================");
+            }
+            else
+            {
+                Console.WriteLine("==============================");
+                Console.WriteLine($"🧙 {Name} - HP: {HP}/{MaxHP}");
+                Console.WriteLine("==============================");
+            }
         }
         public bool IsDead()
         {

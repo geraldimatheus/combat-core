@@ -17,45 +17,54 @@ void ApplyEffects(Character target)
     }
 }
 
-void ExecuteAction(Character attacker, Character target, IAction Action)
-{
-    IAction action = Action;
-
-    var value = action.Action(attacker, target);
-    target.ReceiveDamage(value.damage);
-    string message = value.message;
-    string? effectMessage = value.effectMessage;
-    Console.WriteLine(message);
-    if (effectMessage != null)
-        Console.WriteLine(effectMessage);
-}
-
-void ExecuteSkill(Character attacker, Character target, ISkill Skill)
+void ExecuteChoices(Character attacker, Character target, ISkill? Skill, IAction? Action)
 {
    
-    ISkill skill = Skill;
-    var value = skill.Skill(attacker, target);
-    target.ReceiveDamage(value.damage);
-    string message = value.message;
-    string? effectMessage = value.effectMessage;
-    Console.WriteLine(message);
-    if (effectMessage != null)
-        Console.WriteLine(effectMessage);
+    ISkill? skill = Skill;
+    IAction? action = Action;
+
+    if (skill != null)
+    {
+        var value = skill.Skill(attacker, target);
+        target.ReceiveDamage(value.damage);
+        string message = value.message;
+        string? effectMessage = value.effectMessage;
+        Console.WriteLine(message);
+        if (effectMessage != null)
+            Console.WriteLine(effectMessage);
+    }
+    else if (action != null)
+    {
+        var value = action.Action(attacker, target);
+        string message = value.message;
+        string? effectMessage = value.effectMessage;
+
+        target.ReceiveDamage(value.damage);
+        Console.WriteLine(message);
+
+        if (effectMessage != null)
+            Console.WriteLine(effectMessage);
+    }
+    else
+        Console.WriteLine("Erro inesperado.");
 }
 
 void Turn(Character attacker, Character target, ISkill? skill, IAction? action)
 {
-    if (action == null && skill != null)
+    Console.Clear();
+    Console.WriteLine("================================");
+    Console.WriteLine($" TURNO DE {attacker.Name.ToUpper()}");
+    Console.WriteLine("================================");
+    ApplyEffects(attacker);
+    Thread.Sleep(1000);
+    if (target.IsDead())
     {
-        ExecuteSkill(attacker, target, skill);
-        ApplyEffects(target);
-    }
-    else if (skill == null && action != null)
-    {
-        ExecuteAction(attacker, target, action);
-        ApplyEffects(target);
+        Console.WriteLine($"{target.Name} morreu!");
+        return;
     }
 
+    ExecuteChoices(attacker, target, skill, action);
+    Thread.Sleep(1000);
     if (target.IsDead())
     {
         Console.WriteLine($"{target.Name} morreu!");
@@ -71,12 +80,18 @@ void Turn(Character attacker, Character target, ISkill? skill, IAction? action)
     string? input;
     string? choose;
     int number;
+    IAction? action;
+    ISkill? choosenSkill;
+
     do
     {
+        Console.WriteLine("");
         Console.WriteLine($"{player.Name}, qual ação você quer tomar?");
         Console.WriteLine($"1 - Ataque Básico");
         Console.WriteLine($"2 - Skills");
+        Console.WriteLine($"===========================");
         input = Console.ReadLine();
+
         if (string.IsNullOrWhiteSpace(input))
         {
             Console.WriteLine("Entrada inválida! O campo não pode ser nulo ou vazio.");
@@ -91,17 +106,24 @@ void Turn(Character attacker, Character target, ISkill? skill, IAction? action)
     switch (int.Parse(input))
     {
         case 1:
-            IAction action = player.basicAttack;
+            action = player.basicAttack;
             return (null, action);
         case 2:
             do
             {
+                int i = 0;
                 foreach (ISkill skill in player.Skills)
-                    Console.WriteLine(skill.Name);
+                {
+                    i++;
+                    Console.WriteLine($"{i} - {skill.Name}");
+                }
 
+                Console.WriteLine("");
                 Console.WriteLine($"{player.Name}, qual skill você quer usar?");
+                Console.WriteLine($"===========================");
                 choose = Console.ReadLine();
-
+                Console.WriteLine("");
+               
                 if (string.IsNullOrWhiteSpace(choose))
                 {
                     Console.WriteLine("Entrada inválida! O campo não pode ser nulo ou vazio.");
@@ -119,7 +141,7 @@ void Turn(Character attacker, Character target, ISkill? skill, IAction? action)
             while (string.IsNullOrWhiteSpace(choose) || int.Parse(choose) < 1 || int.Parse(choose) > (player.Skills.Count));
 
             number = int.Parse(choose);
-            var choosenSkill = player.Skills[number - 1];
+            choosenSkill = player.Skills[number - 1];
             return (choosenSkill, null);
 
         default:
@@ -130,6 +152,9 @@ void Turn(Character attacker, Character target, ISkill? skill, IAction? action)
 
 void Fight(Character attacker, Character target)
 {
+    Console.WriteLine("========== TURNO ==========");
+    Console.WriteLine($"⚔️ {attacker.Name} vs 🏹 {target.Name}");
+    Console.WriteLine("===========================");
     while (!attacker.IsDead() && !target.IsDead())
     {
         var result = AttackType(attacker);
@@ -137,7 +162,7 @@ void Fight(Character attacker, Character target)
         if (target.IsDead())
             break;
 
-        AttackType(target);
+        result = AttackType(target);
         Turn(target, attacker, result.skill, result.action);
         if (attacker.IsDead())
             break;

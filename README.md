@@ -52,6 +52,10 @@ Os efeitos possuem:
 
 ---
 
+## 🎮 Demonstração
+
+![Combat Demo](./assets/combat-demo.gif)
+
 ## 🧱 Arquitetura do projeto
 
 O projeto foi organizado com foco em separação de responsabilidades.
