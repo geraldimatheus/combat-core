@@ -8,18 +8,12 @@ namespace CombatCore.Skills
     class HealSkill : ISkill
     {
         public string Name { get { return "Curar"; } }
-        public (int damage, string message, string? effectMessage) Skill(Character attacker, Character target)
+        public (int damage, bool miss, bool crit) Skill(Character attacker, Character target)
         {
-            string message;
-            string? effectMessage = null;
-
             List<IEffect> effects = target.Effects;
-
             IEffect effect = new StunEffect();
             effects.Add(effect);
-
-            message = $"❤️ {attacker.Name} se curou!";
-            return (0, message, effectMessage);
+            return (0, false, false);
 
         }
     }
