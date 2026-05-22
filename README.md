@@ -165,13 +165,15 @@ dotnet run
 
 ---
 
-## Melhorias Recentes
+## Evolução do Projeto
 
-- Implementação do sistema centralizado de BattleLog
-- Organização das mensagens de combate
-- Centralização das saídas visuais das skills
+- Implementação do sistema centralizado de CombatLog
+- Modularização do fluxo de combate
+- Organização das etapas de turno
+- Centralização da execução de ações
+- Sistema isolado de aplicação de efeitos
+- Melhor separação entre fluxo, execução e logs
 - Redução de Console.WriteLine espalhados pelo sistema
-- Melhor separação de responsabilidades no combate
 
 ---
 

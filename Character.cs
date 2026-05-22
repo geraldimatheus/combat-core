@@ -91,10 +91,10 @@ namespace CombatCore
             if (heal < 0)
                 heal = 0;
 
-            hp += heal;
+            HP += heal;
 
-            if (hp > maxHP)
-                hp = maxHP;
+            if (HP > maxHP)
+                HP = maxHP;
         }
     
         public void ShowStatus()

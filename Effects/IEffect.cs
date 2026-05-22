@@ -7,6 +7,6 @@ namespace CombatCore.Effects
 {
     interface IEffect
     {
-        public (int turns, int heal, string message) EffectAction(Character target);
+        public (int damage, int heal, int turns) EffectAction(Character target);
     }
 }

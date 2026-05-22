@@ -5,16 +5,27 @@ using CombatCore.Skills;
 using CombatCore.Classes;
 using CombatCore.Logs;
 
-void ApplyEffects(Character target)
+void ApplyEffects(Character attacker, Character target)
 {
     List<IEffect> effects = target.Effects;
     for (int i = effects.Count - 1; i >= 0; i--)
     {
-        var value = effects[i].EffectAction(target);
-        target.ReceiveHeal(value.heal);
-        Console.WriteLine(value.message);
-        if (value.turns == 0)
-            effects.Remove(effects[i]);
+        IEffect effect = effects[i];
+        if (effect is HealEffect)
+        {
+            var value = effects[i].EffectAction(target);
+            target.ReceiveHeal(value.heal);
+            CombatLog.EffectsLog(target, effect, value.damage, value.heal, value.turns);
+            if (value.turns == 0)
+                effects.Remove(effects[i]);
+        }
+        else
+        {
+            var value = effects[i].EffectAction(attacker);
+            CombatLog.EffectsLog(attacker, effect, value.damage, value.heal, value.turns);
+            if (value.turns == 0)
+                effects.Remove(effects[i]);
+        }
     }
 }
 
@@ -28,62 +39,45 @@ void ExecuteChoices(Character attacker, Character target, ISkill? Skill, IAction
     {
         var value = skill.Skill(attacker, target);
         target.ReceiveDamage(value.damage);
-        BattleLog.SkillLog(attacker, target, skill, value.damage, value.miss, value.crit);
+        CombatLog.SkillLog(attacker, target, skill, value.damage, value.miss, value.crit);
     }
     else if (action != null)
     {
         var value = action.Action(attacker, target);
-        string message = value.message;
-        string? effectMessage = value.effectMessage;
-
         target.ReceiveDamage(value.damage);
-        Console.WriteLine(message);
-
-        if (effectMessage != null)
-            Console.WriteLine(effectMessage);
+        CombatLog.ActionLog(attacker, target, action, value.damage, value.miss, value.crit);
     }
     else
-        Console.WriteLine("Erro inesperado.");
+        Console.WriteLine("⚠️ Erro ao executar ações");
 }
 
-void Turn(Character attacker, Character target, ISkill? skill, IAction? action)
+void Shift(Character attacker, Character target, ISkill? skill, IAction? action)
 {
-    Console.Clear();
-    Console.WriteLine("================================");
-    Console.WriteLine($" TURNO DE {attacker.Name.ToUpper()}");
-    Console.WriteLine("================================");
-    ApplyEffects(attacker);
+    CombatLog.StartShiftLog(attacker);
+    ApplyEffects(attacker, target);
     Thread.Sleep(1000);
-    if (target.IsDead())
-    {
-        Console.WriteLine($"☠️ {target.Name} morreu!");
-        return;
-    }
 
+    CombatLog.IsDeadLog(target);
     ExecuteChoices(attacker, target, skill, action);
     Thread.Sleep(1000);
-    if (target.IsDead())
-    {
-        Console.WriteLine($"☠️ {target.Name} morreu!");
-        return;
-    }
 
+    CombatLog.IsDeadLog(target);
     attacker.ShowStatus();
     target.ShowStatus();
 }
 
 void Fight(Character attacker, Character target)
 {
-    BattleLog.StartBattleLog(attacker, target);
+    CombatLog.StartCombatLog(attacker, target);
     while (!attacker.IsDead() && !target.IsDead())
     {
-        var result = BattleLog.AttackTypeLog(attacker);
-        Turn(attacker, target, result.skill, result.action);
+        var result = CombatLog.AttackTypeLog(attacker);
+        Shift(attacker, target, result.skill, result.action);
         if (target.IsDead())
             break;
 
-        result = BattleLog.AttackTypeLog(attacker);
-        Turn(target, attacker, result.skill, result.action);
+        result = CombatLog.AttackTypeLog(target);
+        Shift(target, attacker, result.skill, result.action);
         if (attacker.IsDead())
             break;
     }

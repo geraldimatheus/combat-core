@@ -6,12 +6,13 @@ using CombatCore.Skills;
 using CombatCore.Skills.ArrowSkills;
 using CombatCore.Skills.MagicSkills;
 using CombatCore.Skills.SwordSkills;
+using CombatCore.Effects;
 
 namespace CombatCore.Logs
 {
-    class BattleLog
+    class CombatLog
     {
-        public static void StartBattleLog(Character attacker, Character target)
+        public static void StartCombatLog(Character attacker, Character target)
         {
             var attackerClass = attacker.basicAttack;
             var targetClass = target.basicAttack;
@@ -214,5 +215,122 @@ namespace CombatCore.Logs
                 return;
             }
         }
-    }
+
+        public static void ActionLog(Character attacker, Character target, IAction? action, int damage, bool miss, bool crit)
+        {
+			if (action is MageAttackAction)
+			{
+				if (miss)
+				{
+					Console.WriteLine($"❌ {attacker.Name} errou o ataque!");
+					return;
+				}
+				else
+				{
+					Console.WriteLine($"🩸 {attacker.Name} atacou causando {damage} de dano em {target.Name}!");
+					return;
+				}
+			}
+			else if (action is WarriorAttackAction)
+			{
+				if (miss)
+				{
+					Console.WriteLine($"❌ {attacker.Name} errou o ataque!");
+					return;
+				}
+				else
+				{
+					if (crit)
+					{
+						Console.WriteLine($"💥 {attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage * 2} de dano!");
+						return;
+					}
+
+					Console.WriteLine($"🩸 {attacker.Name} atacou causando {damage} de dano em {target.Name}!");
+					return;
+				}
+			}
+			else if (action is ArcherAttackAction)
+			{
+				if (miss)
+				{
+					Console.WriteLine($"❌ {attacker.Name} errou o ataque!");
+					return;
+				}
+				else
+				{
+					if (crit)
+					{
+						Console.WriteLine($"💥 {attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage * 2} de dano!");
+						return;
+					}
+
+					Console.WriteLine($"🩸 {attacker.Name} atacou causando {damage} de dano em {target.Name}!");
+					return;
+				}
+			}
+			else
+			{
+				Console.WriteLine("⚠️ Erro ao usar ataque básico.");
+				return;
+			}
+
+		}
+
+        public static void EffectsLog(Character target, IEffect? effect, int damage, int heal, int turns)
+        {
+			if (effect is StunEffect)
+			{
+					Console.WriteLine($"{target.Name} está atordoado! Dura uma rodada.");
+					return;
+			}
+			else if (effect is PoisonEffect)
+			{
+				Console.WriteLine($"☠️ {target.Name} está envenenado por {turns} rodadas! Sofreu {damage} de dano.");
+
+				if (turns <= 0)
+				{
+					Console.WriteLine($"O efeito de envenenamento acabou.");
+                    return;
+				}
+			}
+			else if (effect is BurnEffect)
+			{
+				Console.WriteLine($"🔥 {target.Name} está queimando por {turns} rodadas! Sofreu {damage} de dano.");
+
+				if (turns <= 0)
+				{
+					Console.WriteLine($"O efeito de queimação acabou.");
+					return;
+				}
+			}
+			else if (effect is HealEffect)
+			{
+				Console.WriteLine($"❤️ {target.Name} se curou em {heal} pontos de vida.");
+				return;
+			}
+			else
+			{
+				Console.WriteLine("⚠️ Erro ao aplicar efeito.");
+				return;
+			}
+		}
+
+        public static void StartShiftLog(Character attacker)
+        {
+			Console.Clear();
+			Console.WriteLine("================================");
+			Console.WriteLine($" TURNO DE {attacker.Name.ToUpper()}");
+			Console.WriteLine("================================");
+		}
+
+        public static void IsDeadLog(Character target)
+        {
+			if (target.IsDead())
+			{
+				Console.WriteLine($"☠️ {target.Name} morreu!");
+				return;
+			}
+		}
+	}
 }

@@ -7,11 +7,11 @@ namespace CombatCore.Skills
 {
     class HealSkill : ISkill
     {
-        public string Name { get { return "Curar"; } }
+        public string Name { get { return "❤️ Curar"; } }
         public (int damage, bool miss, bool crit) Skill(Character attacker, Character target)
         {
-            List<IEffect> effects = target.Effects;
-            IEffect effect = new StunEffect();
+            List<IEffect> effects = attacker.Effects;
+            IEffect effect = new HealEffect();
             effects.Add(effect);
             return (0, false, false);
 
