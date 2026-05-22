@@ -5,23 +5,23 @@ using CombatCore.Actions;
 
 namespace CombatCore.Actions.MageActions
 {
-    class MageAttack : IAction
+    class MageAttackAction : IAction
     {
         private static Random rand = new Random();
-        public (int damage, int heal, string message, string? effectMessage) Action(Character attacker, Character target)
+        public (int damage, string message, string? effectMessage) Action(Character attacker, Character target)
         {
             string message;
             bool miss = rand.Next(0, 100) < 10;
             if (miss)
             {
-                message = $"{attacker.Name} errou o ataque!";
-                return (0, 0, message, null);
+                message = $"❌ {attacker.Name} errou o ataque!";
+                return (0, message, null);
             }
 
             int attack = attacker.Attack;
             int damage = attack + rand.Next(0, 11);
-            message = $"{attacker.Name} atacou causando {damage} de dano em {target.Name}!";
-            return (damage, 0, message, null);
+            message = $"🩸 {attacker.Name} atacou causando {damage} de dano em {target.Name}!";
+            return (damage, message, null);
         }
 
     }

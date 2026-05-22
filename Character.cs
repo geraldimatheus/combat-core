@@ -99,13 +99,13 @@ namespace CombatCore
     
         public void ShowStatus()
         {
-            if (basicAttack is WarriorAttack)
+            if (basicAttack is WarriorAttackAction)
             {
                 Console.WriteLine("==============================");
                 Console.WriteLine($"⚔️ {Name} - HP: {HP}/{MaxHP}");
                 Console.WriteLine("==============================");
             }
-            else if (basicAttack is ArcherAttack)
+            else if (basicAttack is ArcherAttackAction)
             {
                 Console.WriteLine("==============================");
                 Console.WriteLine($"🏹 {Name} - HP: {HP}/{MaxHP}");

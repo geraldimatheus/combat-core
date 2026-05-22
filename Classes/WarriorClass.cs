@@ -1,21 +1,20 @@
 ﻿using CombatCore.Actions.WarriorActions;
+using CombatCore.Skills;
 using CombatCore.Skills.SwordSkills;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CombatCore.Classes
 {
-    class Warrior : Character
+    class WarriorClass : Character
     {
-        public Warrior(string name)
+        public WarriorClass(string name)
             : base(name, 115, 20)
         {
-            basicAttack = new WarriorAttack();
+            basicAttack = new WarriorAttackAction();
 
             Skills.Add(new FireSword());
             Skills.Add(new PoisonSword());
             Skills.Add(new StunSword());
+            Skills.Add(new HealSkill());
         }
     }
 }

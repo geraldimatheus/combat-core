@@ -6,6 +6,6 @@ namespace CombatCore.Actions
 {
     interface IAction
     {
-        public (int damage, int heal, string message, string? effectMessage) Action(Character attacker, Character target);
+        public (int damage, string message, string? effectMessage) Action(Character attacker, Character target);
     }
 }

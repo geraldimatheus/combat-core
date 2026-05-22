@@ -165,6 +165,16 @@ dotnet run
 
 ---
 
+## Melhorias Recentes
+
+- Implementação do sistema centralizado de BattleLog
+- Organização das mensagens de combate
+- Centralização das saídas visuais das skills
+- Redução de Console.WriteLine espalhados pelo sistema
+- Melhor separação de responsabilidades no combate
+
+---
+
 ## 🔮 Melhorias futuras
 
 - Sistema de inventário

@@ -3,19 +3,22 @@ using CombatCore.Skills.MagicSkills;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using CombatCore.Skills;
+
 
 namespace CombatCore.Classes
 {
-    class Mage : Character
+    class MageClass : Character
     {
-        public Mage(string name)
+        public MageClass(string name)
             : base(name, 85, 35)
         {
-            basicAttack = new MageAttack();
+            basicAttack = new MageAttackAction();
 
             Skills.Add(new MagicFire());
             Skills.Add(new MagicPoison());
             Skills.Add(new MagicStun());
+            Skills.Add(new HealSkill());
         }
     }
 }
