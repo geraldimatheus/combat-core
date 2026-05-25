@@ -9,8 +9,10 @@ namespace CombatCore.Classes
 {
     class ArcherClass : Character
     {
+        public const string icon = "🏹";
+        private const string _class = "Arqueiro";
         public ArcherClass(string name)
-            : base(name, 100, 30)
+            : base(name, _class, icon, 100, 30)
         {
             basicAttack = new ArcherAttackAction();    
 

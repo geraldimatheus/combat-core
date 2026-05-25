@@ -5,27 +5,17 @@ using CombatCore.Skills;
 using CombatCore.Classes;
 using CombatCore.Logs;
 
-void ApplyEffects(Character attacker, Character target)
+void ApplyEffects(Character player)
 {
-    List<IEffect> effects = target.Effects;
+    List<IEffect> effects = player.Effects;
     for (int i = effects.Count - 1; i >= 0; i--)
     {
         IEffect effect = effects[i];
-        if (effect is HealEffect)
-        {
-            var value = effects[i].EffectAction(target);
-            target.ReceiveHeal(value.heal);
-            CombatLog.EffectsLog(target, effect, value.damage, value.heal, value.turns);
-            if (value.turns == 0)
-                effects.Remove(effects[i]);
-        }
-        else
-        {
-            var value = effects[i].EffectAction(attacker);
-            CombatLog.EffectsLog(attacker, effect, value.damage, value.heal, value.turns);
-            if (value.turns == 0)
-                effects.Remove(effects[i]);
-        }
+        var value = effects[i].EffectAction(player);
+        player.ReceiveHeal(value.heal);
+        CombatLog.EffectsLog(player, effect, value.damage, value.heal, value.turns);
+        if (value.turns == 0)
+            effects.Remove(effects[i]);
     }
 }
 
@@ -54,7 +44,10 @@ void ExecuteChoices(Character attacker, Character target, ISkill? Skill, IAction
 void Shift(Character attacker, Character target, ISkill? skill, IAction? action)
 {
     CombatLog.StartShiftLog(attacker);
-    ApplyEffects(attacker, target);
+    if (skill is HealSkill)
+        ApplyEffects(attacker);
+    else
+        ApplyEffects(target);
     Thread.Sleep(1000);
 
     CombatLog.IsDeadLog(target);

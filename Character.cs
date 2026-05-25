@@ -27,6 +27,26 @@ namespace CombatCore
             }
         }
 
+        private string _class;
+        public string _Class
+        {
+            get { return _class; }
+            set
+            {
+                _class = string.IsNullOrWhiteSpace(value) ? "Sem classe" : value;
+            }
+        }
+
+        private string icon;
+        public string Icon
+        {
+            get { return icon; }
+            set
+            {
+                icon = string.IsNullOrWhiteSpace(value) ? "❓" : value;
+            }
+        }
+
         private int hp;
         private int maxHP;
         public int HP
@@ -62,10 +82,14 @@ namespace CombatCore
             get { return skills; }
         }
 
-        public Character(string name, int maxHP, int attack)
+        public Character(string name, string _class, string icon, int maxHP, int attack)
         {
             this.name = name;
             Name = name;
+            this._class = _class;
+            _Class = _class;
+            this.icon = icon;
+            Icon = icon;
             maxHP = maxHP < 0 ? 1 : maxHP;
             this.maxHP = maxHP;
             hp = maxHP;
@@ -99,24 +123,9 @@ namespace CombatCore
     
         public void ShowStatus()
         {
-            if (basicAttack is WarriorAttackAction)
-            {
-                Console.WriteLine("==============================");
-                Console.WriteLine($"⚔️ {Name} - HP: {HP}/{MaxHP}");
-                Console.WriteLine("==============================");
-            }
-            else if (basicAttack is ArcherAttackAction)
-            {
-                Console.WriteLine("==============================");
-                Console.WriteLine($"🏹 {Name} - HP: {HP}/{MaxHP}");
-                Console.WriteLine("==============================");
-            }
-            else
-            {
-                Console.WriteLine("==============================");
-                Console.WriteLine($"🧙 {Name} - HP: {HP}/{MaxHP}");
-                Console.WriteLine("==============================");
-            }
+            Console.WriteLine("==============================");
+            Console.WriteLine($"{Icon} {Name} - HP: {HP}/{MaxHP}");
+            Console.WriteLine("==============================");
         }
         public bool IsDead()
         {

@@ -6,8 +6,10 @@ namespace CombatCore.Classes
 {
     class WarriorClass : Character
     {
+        public const string icon = "⚔️";
+        private const string _class = "Guerreiro";
         public WarriorClass(string name)
-            : base(name, 115, 20)
+            : base(name, _class, icon, 115, 20)
         {
             basicAttack = new WarriorAttackAction();
 

@@ -10,8 +10,10 @@ namespace CombatCore.Classes
 {
     class MageClass : Character
     {
+        public const string icon = "🧙";
+        private const string _class = "Mago";
         public MageClass(string name)
-            : base(name, 85, 35)
+            : base(name, _class, icon, 85, 35)
         {
             basicAttack = new MageAttackAction();
 

@@ -14,64 +14,8 @@ namespace CombatCore.Logs
     {
         public static void StartCombatLog(Character attacker, Character target)
         {
-            var attackerClass = attacker.basicAttack;
-            var targetClass = target.basicAttack;
-
             Console.WriteLine("========== TURNO ==========");
-            switch (attackerClass)
-            {
-                case WarriorAttackAction:
-                    switch (targetClass)
-                    {
-                        case WarriorAttackAction:
-                            Console.WriteLine($"⚔️ {attacker.Name} vs ⚔️ {target.Name}");
-                            break;
-                        case ArcherAttackAction:
-                            Console.WriteLine($"⚔️ {attacker.Name} vs 🏹 {target.Name}");
-                            break;
-                        case MageAttackAction:
-                            Console.WriteLine($"⚔️ {attacker.Name} vs 🧙 {target.Name}");
-                            break;
-                        default:
-                            Console.WriteLine("⚠️ Erro ao iniciar batalha.");
-                            break;
-                    }
-                    break;
-                case ArcherAttackAction:
-                    switch (targetClass)
-                    {
-                        case WarriorAttackAction:
-                            Console.WriteLine($"🏹 {attacker.Name} vs ⚔️ {target.Name}");
-                            break;
-                        case ArcherAttackAction:
-                            Console.WriteLine($"🏹 {attacker.Name} vs 🏹 {target.Name}");
-                            break;
-                        case MageAttackAction:
-                            Console.WriteLine($"🏹 {attacker.Name} vs 🧙 {target.Name}");
-                            break;
-                        default:
-                            Console.WriteLine("⚠️ Erro ao iniciar batalha.");
-                            break;
-                    }
-                    break;
-                case MageAttackAction:
-                    switch (targetClass)
-                    {
-                        case WarriorAttackAction:
-                            Console.WriteLine($"🧙 {attacker.Name} vs ⚔️ {target.Name}");
-                            break;
-                        case ArcherAttackAction:
-                            Console.WriteLine($"🧙 {attacker.Name} vs 🏹 {target.Name}");
-                            break;
-                        case MageAttackAction:
-                            Console.WriteLine($"🧙 {attacker.Name} vs 🧙 {target.Name}");
-                            break;
-                        default:
-                            Console.WriteLine("⚠️ Erro ao iniciar batalha.");
-                            break;
-                    }
-                    break;
-            }
+            Console.WriteLine($"{attacker.Icon} {attacker.Name} VS {target.Icon} {target.Name}");
             Console.WriteLine("===========================");
         }
 
@@ -175,7 +119,7 @@ namespace CombatCore.Logs
 
                     if (crit)
                     {
-                        Console.WriteLine($"💥 {attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage * 2} de dano!");
+                        Console.WriteLine($"💥 {attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage} de dano!");
                         return;
                     }
 
@@ -196,7 +140,7 @@ namespace CombatCore.Logs
 
                     if (crit)
                     {
-                        Console.WriteLine($"💥 {attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage * 2} de dano!");
+                        Console.WriteLine($"💥 {attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage} de dano!");
                         return;
                     }
 
@@ -218,7 +162,7 @@ namespace CombatCore.Logs
 
         public static void ActionLog(Character attacker, Character target, IAction? action, int damage, bool miss, bool crit)
         {
-			if (action is MageAttackAction)
+			if (attacker._Class == "Mago")
 			{
 				if (miss)
 				{
@@ -231,26 +175,18 @@ namespace CombatCore.Logs
 					return;
 				}
 			}
-			else if (action is WarriorAttackAction)
+			else if (attacker._Class == "Guerreiro")
 			{
-				if (miss)
+				if (crit)
 				{
-					Console.WriteLine($"❌ {attacker.Name} errou o ataque!");
+					Console.WriteLine($"💥 {attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage} de dano!");
 					return;
 				}
-				else
-				{
-					if (crit)
-					{
-						Console.WriteLine($"💥 {attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage * 2} de dano!");
-						return;
-					}
 
-					Console.WriteLine($"🩸 {attacker.Name} atacou causando {damage} de dano em {target.Name}!");
-					return;
-				}
+				Console.WriteLine($"🩸 {attacker.Name} atacou causando {damage} de dano em {target.Name}!");
+				return;				
 			}
-			else if (action is ArcherAttackAction)
+			else if (attacker._Class == "Arqueiro")
 			{
 				if (miss)
 				{
@@ -261,7 +197,7 @@ namespace CombatCore.Logs
 				{
 					if (crit)
 					{
-						Console.WriteLine($"💥 {attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage * 2} de dano!");
+						Console.WriteLine($"💥 {attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage} de dano!");
 						return;
 					}
 
@@ -320,7 +256,7 @@ namespace CombatCore.Logs
         {
 			Console.Clear();
 			Console.WriteLine("================================");
-			Console.WriteLine($" TURNO DE {attacker.Name.ToUpper()}");
+			Console.WriteLine($"TURNO DE {attacker.Name.ToUpper()}");
 			Console.WriteLine("================================");
 		}
 
