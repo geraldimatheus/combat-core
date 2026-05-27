@@ -100,6 +100,66 @@ namespace CombatCore
             skills = new List<ISkill>();
 
         }
+        public (IAction? action, ISkill? skill) CharDecision(Character target)
+        {
+            IAction? action = null;
+            ISkill? skill = null;
+            if (hp < (maxHP / 2 - 10))
+            {
+                skill = new HealSkill();
+                return (action, skill);
+            }
+
+            if (target.hp < (target.MaxHP / 2 - 10))
+            {
+                if (target.Effects.Count != 0 && target.Effects != null)
+                { 
+                    action = basicAttack;
+                    return (action, skill);
+                }
+                else
+                {
+                    ISkill? _strongestSkill = null;
+                    int skilldamage = 0;
+
+                    foreach (ISkill s in Skills)
+                    {
+                        int _currentDamage = s.Skill(this, target).damage;
+                        if (_currentDamage > skilldamage)
+                        {
+                            skilldamage = _currentDamage;
+                            _strongestSkill = s;
+                        }
+                    }
+
+                    return (action, _strongestSkill);
+                }
+            }
+
+            if (target.Effects != null && target.Effects.Count != 0)
+            {
+                action = basicAttack;
+                return (action, skill);
+            }
+            else
+            {
+                ISkill? _strongestSkill = null;
+                int skilldamage = 0;
+
+                foreach (ISkill s in Skills)
+                {
+                    int _currentDamage = s.Skill(this, target).damage;
+                    if (_currentDamage > skilldamage)
+                    {
+                        skilldamage = _currentDamage;
+                        _strongestSkill = s;
+                    }
+                }
+
+                return (action, _strongestSkill);
+            }
+        }
+
         public void ReceiveDamage(int damage)
         {
             if (damage < 0)

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CombatCore.Actions;
-using CombatCore.Effects;
+﻿using CombatCore.Effects;
 
 namespace CombatCore.Skills.SwordSkills
 {
