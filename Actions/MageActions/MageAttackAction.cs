@@ -1,7 +1,8 @@
-﻿using System;
+﻿using CombatCore.Actions;
+using CombatCore.Actions.WarriorActions;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using CombatCore.Actions;
 
 namespace CombatCore.Actions.MageActions
 {
@@ -14,8 +15,7 @@ namespace CombatCore.Actions.MageActions
             if (miss)
                 return (0, true, false);
 
-            int attack = attacker.Attack;
-            int damage = attack + rand.Next(0, 11);
+            int damage = attacker.CalculateDamage(attacker.basicAttack, null);
             return (damage, false, false);
         }
 

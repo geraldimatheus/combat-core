@@ -100,39 +100,95 @@ namespace CombatCore
             skills = new List<ISkill>();
 
         }
+
+        private static Random rand = new Random();
+
+        public int CalculateDamage(IAction? action, ISkill? skill)
+        {
+            int damage = attack;
+            if (skill != null)
+            {
+                if (skill.Name.Contains("🔥"))
+                    return damage += 7;
+                if (skill.Name.Contains("⚡") || skill.Name.Contains("🌀"))
+                    return damage;
+                if (skill.Name.Contains("☠️"))
+                    return damage += rand.Next(0, 11);
+                else
+                    return 0;
+            }
+
+            if (action != null)
+            {
+                if (this._Class.Contains("Mago"))
+                    return damage += rand.Next(0, 11);
+                if (this._Class.Contains("Guerreiro"))
+                    return damage += 5;
+                if (this._Class.Contains("Arqueiro"))
+                    return damage += 3;
+                else
+                    return 0;
+            }
+
+            return 0;
+        }
+
+        private ISkill? StrongestSkill()
+        {
+            ISkill? _strongestSkill = null;
+            int skilldamage = 0;
+
+            foreach (ISkill s in Skills)
+            {
+                int _currentDamage = this.CalculateDamage(null, s);
+                if (_currentDamage > skilldamage)
+                {
+                    skilldamage = _currentDamage;
+                    _strongestSkill = s;
+                }
+            }
+
+            return _strongestSkill;
+        }
+
         public (IAction? action, ISkill? skill) CharDecision(Character target)
         {
             IAction? action = null;
             ISkill? skill = null;
             if (hp < (maxHP / 2 - 10))
             {
-                skill = new HealSkill();
+                bool healskill = rand.Next(0, 100) < 50;
+                if (healskill)
+                    return (action, new HealSkill());
+
+                bool stunskill = rand.Next(0, 100) > 50;
+                if (stunskill)
+                {
+                    switch (this._Class)
+                    {
+                        case "Mago":
+                            return (action, new MagicStun());
+                        case "Guerreiro":
+                            return (action, new StunSword());
+                        case "Arqueiro":
+                            return (action, new StunArrow());
+                    }
+                }
+
                 return (action, skill);
             }
 
             if (target.hp < (target.MaxHP / 2 - 10))
             {
-                if (target.Effects.Count != 0 && target.Effects != null)
+                if (target.Effects != null && target.Effects.Count != 0)
                 { 
                     action = basicAttack;
                     return (action, skill);
                 }
                 else
                 {
-                    ISkill? _strongestSkill = null;
-                    int skilldamage = 0;
-
-                    foreach (ISkill s in Skills)
-                    {
-                        int _currentDamage = s.Skill(this, target).damage;
-                        if (_currentDamage > skilldamage)
-                        {
-                            skilldamage = _currentDamage;
-                            _strongestSkill = s;
-                        }
-                    }
-
-                    return (action, _strongestSkill);
+                    skill = StrongestSkill();
+                    return (action, skill);
                 }
             }
 
@@ -143,20 +199,8 @@ namespace CombatCore
             }
             else
             {
-                ISkill? _strongestSkill = null;
-                int skilldamage = 0;
-
-                foreach (ISkill s in Skills)
-                {
-                    int _currentDamage = s.Skill(this, target).damage;
-                    if (_currentDamage > skilldamage)
-                    {
-                        skilldamage = _currentDamage;
-                        _strongestSkill = s;
-                    }
-                }
-
-                return (action, _strongestSkill);
+                skill = StrongestSkill();
+                return (action, skill);
             }
         }
 

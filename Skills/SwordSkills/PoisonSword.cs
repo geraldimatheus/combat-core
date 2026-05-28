@@ -1,8 +1,9 @@
-﻿using System;
+﻿using CombatCore.Actions;
+using CombatCore.Effects;
+using CombatCore.Skills.ArrowSkills;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using CombatCore.Actions;
-using CombatCore.Effects;
 
 namespace CombatCore.Skills.SwordSkills
 {
@@ -13,7 +14,6 @@ namespace CombatCore.Skills.SwordSkills
         private static Random rand = new Random();
         public (int damage, bool miss, bool crit) Skill(Character attacker, Character target)
         {
-            int attack = attacker.Attack;
             List<IEffect> effects = target.Effects;
             bool miss = rand.Next(0, 100) < 10;
 
@@ -22,7 +22,7 @@ namespace CombatCore.Skills.SwordSkills
 
             IEffect effect = new PoisonEffect();
             effects.Add(effect);
-            int damage = attack + 5;
+            int damage = attacker.CalculateDamage(null, new PoisonSword());
             bool crit = rand.Next(0, 100) < 25;
 
             if (crit)

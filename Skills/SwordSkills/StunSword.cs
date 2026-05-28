@@ -1,4 +1,5 @@
 ﻿using CombatCore.Effects;
+using CombatCore.Skills.ArrowSkills;
 
 namespace CombatCore.Skills.SwordSkills
 {
@@ -9,7 +10,6 @@ namespace CombatCore.Skills.SwordSkills
         private static Random rand = new Random();
         public (int damage, bool miss, bool crit) Skill(Character attacker, Character target)
         {
-            int attack = attacker.Attack;
             List<IEffect> effects = target.Effects;
             bool miss = rand.Next(0, 100) < 20;
 
@@ -18,7 +18,7 @@ namespace CombatCore.Skills.SwordSkills
 
             IEffect effect = new StunEffect();
             effects.Add(effect);
-            int damage = attack + 5;
+            int damage = attacker.CalculateDamage(null, new StunSword());
 
             return (damage, false, false);
         }

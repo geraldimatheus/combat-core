@@ -6,6 +6,8 @@ namespace CombatCore.Effects
 {
     class PoisonEffect : IEffect
     {
+        public string Name { get { return "Envenenamento"; } }
+
         int turns = 3;
         public (int damage, int heal, int turns) EffectAction(Character target)
         {

@@ -1,12 +1,7 @@
 ﻿using CombatCore.Actions;
-using CombatCore.Actions.ArcherActions;
-using CombatCore.Actions.MageActions;
-using CombatCore.Actions.WarriorActions;
-using CombatCore.Skills;
-using CombatCore.Skills.ArrowSkills;
-using CombatCore.Skills.MagicSkills;
-using CombatCore.Skills.SwordSkills;
 using CombatCore.Effects;
+using CombatCore.Skills;
+using System.ComponentModel;
 
 namespace CombatCore.Logs
 {
@@ -92,77 +87,85 @@ namespace CombatCore.Logs
 
         public static void SkillLog(Character attacker, Character target, ISkill? skill, int damage, bool miss, bool crit)
         {
-            if (skill is StunSword || skill is MagicStun || skill is StunArrow)
+            if (skill != null)
             {
-                if (miss)
+                if (skill.Name.Contains("⚡") || skill.Name.Contains("🌀"))
                 {
-                    Console.WriteLine($"❌ {attacker.Name} errou o ataque!");
-                    return;
-                }
-                else
-                {
-                    Console.WriteLine($"💫 {target.Name} ficou atordoado!");
-                    Console.WriteLine($"🩸 {attacker.Name} atacou causando {damage} de dano em {target.Name}!");
-                    return;
-                }
-            }
-            else if (skill is FireSword || skill is MagicFire || skill is FireArrow)
-            {
-                if (miss)
-                {
-                    Console.WriteLine($"❌ {attacker.Name} errou o ataque!");
-                    return;
-                }
-                else
-                {
-                    Console.WriteLine($"🔥 {target.Name} foi queimado!");
-
-                    if (crit)
+                    if (miss)
                     {
-                        Console.WriteLine($"💥 {attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage} de dano!");
+                        Console.WriteLine($"❌ {attacker.Name} errou o ataque!");
                         return;
                     }
-
-                    Console.WriteLine($"🩸 {attacker.Name} atacou causando {damage} de dano em {target.Name}!");
-                    return;
+                    else
+                    {
+                        Console.WriteLine($"💫 {target.Name} ficou atordoado!");
+                        Console.WriteLine($"🩸 {attacker.Name} atacou causando {damage} de dano em {target.Name}!");
+                        return;
+                    }
                 }
-            }
-            else if (skill is PoisonSword || skill is MagicPoison || skill is PoisonArrow)
-            {
-                if (miss)
+                else if (skill.Name.Contains("🔥"))
                 {
-                    Console.WriteLine($"❌ {attacker.Name} errou o ataque!");
+                    if (miss)
+                    {
+                        Console.WriteLine($"❌ {attacker.Name} errou o ataque!");
+                        return;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"🔥 {target.Name} foi queimado!");
+
+                        if (crit)
+                        {
+                            Console.WriteLine($"💥 {attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage} de dano!");
+                            return;
+                        }
+
+                        Console.WriteLine($"🩸 {attacker.Name} atacou causando {damage} de dano em {target.Name}!");
+                        return;
+                    }
+                }
+                else if (skill.Name.Contains("☠️"))
+                {
+                    if (miss)
+                    {
+                        Console.WriteLine($"❌ {attacker.Name} errou o ataque!");
+                        return;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"☠️ {target.Name} foi envenenado!");
+
+                        if (crit)
+                        {
+                            Console.WriteLine($"💥 {attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage} de dano!");
+                            return;
+                        }
+
+                        Console.WriteLine($"🩸 {attacker.Name} atacou causando {damage} de dano em {target.Name}!");
+                        return;
+                    }
+                }
+                else if (skill.Name.Contains("❤️"))
+                {
+                    Console.WriteLine($"❤️ {attacker.Name} se curou!");
                     return;
                 }
                 else
                 {
-                    Console.WriteLine($"☠️ {target.Name} foi envenenado!");
-
-                    if (crit)
-                    {
-                        Console.WriteLine($"💥 {attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage} de dano!");
-                        return;
-                    }
-
-                    Console.WriteLine($"🩸 {attacker.Name} atacou causando {damage} de dano em {target.Name}!");
+                    Console.WriteLine("⚠️ Erro ao usar skill.");
                     return;
                 }
-            }
-            else if (skill is HealSkill)
-            {
-                Console.WriteLine($"❤️ {attacker.Name} se curou!");
-                return;
             }
             else
             {
-                Console.WriteLine("⚠️ Erro ao usar skill.");
+                Console.WriteLine("⚠️ Erro ao exibir mensagem de skill.");
                 return;
             }
         }
 
         public static void ActionLog(Character attacker, Character target, IAction? action, int damage, bool miss, bool crit)
         {
-			if (attacker._Class == "Mago")
+			if (attacker._Class.Contains("Mago"))
 			{
 				if (miss)
 				{
@@ -175,7 +178,7 @@ namespace CombatCore.Logs
 					return;
 				}
 			}
-			else if (attacker._Class == "Guerreiro")
+			else if (attacker._Class.Contains("Guerreiro"))
 			{
 				if (crit)
 				{
@@ -186,7 +189,7 @@ namespace CombatCore.Logs
 				Console.WriteLine($"🩸 {attacker.Name} atacou causando {damage} de dano em {target.Name}!");
 				return;				
 			}
-			else if (attacker._Class == "Arqueiro")
+			else if (attacker._Class.Contains("Arqueiro"))
 			{
 				if (miss)
 				{
@@ -215,41 +218,44 @@ namespace CombatCore.Logs
 
         public static void EffectsLog(Character target, IEffect? effect, int damage, int heal, int turns)
         {
-			if (effect is StunEffect)
-			{
-					Console.WriteLine($"{target.Name} está atordoado! Dura uma rodada.");
-					return;
-			}
-			else if (effect is PoisonEffect)
-			{
-				Console.WriteLine($"☠️ {target.Name} está envenenado por {turns} rodadas! Sofreu {damage} de dano.");
-
-				if (turns <= 0)
-				{
-					Console.WriteLine($"O efeito de envenenamento acabou.");
+            if (effect != null)
+            {
+                if (effect.Name.Contains("Atordoamento"))
+                {
+                    Console.WriteLine($"{target.Name} está atordoado! Dura uma rodada.");
                     return;
-				}
-			}
-			else if (effect is BurnEffect)
-			{
-				Console.WriteLine($"🔥 {target.Name} está queimando por {turns} rodadas! Sofreu {damage} de dano.");
+                }
+                else if (effect.Name.Contains("Envenenamento"))
+                {
+                    Console.WriteLine($"☠️ {target.Name} está envenenado por {turns} rodadas! Sofreu {damage} de dano.");
 
-				if (turns <= 0)
-				{
-					Console.WriteLine($"O efeito de queimação acabou.");
-					return;
-				}
-			}
-			else if (effect is HealEffect)
-			{
-				Console.WriteLine($"❤️ {target.Name} se curou em {heal} pontos de vida.");
-				return;
-			}
-			else
-			{
-				Console.WriteLine("⚠️ Erro ao aplicar efeito.");
-				return;
-			}
+                    if (turns <= 0)
+                    {
+                        Console.WriteLine($"O efeito de envenenamento acabou.");
+                        return;
+                    }
+                }
+                else if (effect.Name.Contains("Queimadura"))
+                {
+                    Console.WriteLine($"🔥 {target.Name} está queimando por {turns} rodadas! Sofreu {damage} de dano.");
+
+                    if (turns <= 0)
+                    {
+                        Console.WriteLine($"O efeito de queimação acabou.");
+                        return;
+                    }
+                }
+                else if (effect.Name.Contains("Cura"))
+                {
+                    Console.WriteLine($"❤️ {target.Name} se curou em {heal} pontos de vida.");
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("⚠️ Erro ao aplicar efeito.");
+                    return;
+                }
+            }
 		}
 
         public static void StartShiftLog(Character attacker)

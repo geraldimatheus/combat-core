@@ -6,6 +6,8 @@ namespace CombatCore.Effects
 {
     class BurnEffect : IEffect
     {
+        public string Name { get { return "Queimadura"; } }
+
         int turns = 3;
         public (int damage, int heal, int turns) EffectAction(Character target)
         {

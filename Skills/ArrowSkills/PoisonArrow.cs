@@ -12,7 +12,6 @@ namespace CombatCore.Skills.ArrowSkills
         private static Random rand = new Random();
         public (int damage, bool miss, bool crit) Skill(Character attacker, Character target)
         {
-            int attack = attacker.Attack;
             List<IEffect> effects = target.Effects;
             bool miss = rand.Next(0, 100) < 10;
 
@@ -21,7 +20,7 @@ namespace CombatCore.Skills.ArrowSkills
 
             IEffect effect = new PoisonEffect();
             effects.Add(effect);
-            int damage = attack;
+            int damage = attacker.CalculateDamage(null, new PoisonArrow());
             bool crit = rand.Next(0, 100) < 10;
 
             if (crit)

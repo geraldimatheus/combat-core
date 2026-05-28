@@ -1,4 +1,5 @@
 ﻿using CombatCore.Effects;
+using CombatCore.Skills.ArrowSkills;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +13,6 @@ namespace CombatCore.Skills.MagicSkills
         private static Random rand = new Random();
         public (int damage, bool miss, bool crit) Skill(Character attacker, Character target)
         {
-            int attack = attacker.Attack;
             List<IEffect> effects = target.Effects;
             bool miss = rand.Next(0, 100) < 10;
 
@@ -21,7 +21,7 @@ namespace CombatCore.Skills.MagicSkills
 
             IEffect effect = new PoisonEffect();
             effects.Add(effect);
-            int damage = attack + rand.Next(0, 11);
+            int damage = attacker.CalculateDamage(null, new MagicPoison());
             return (damage, false, false);
         }
 

@@ -167,13 +167,17 @@ dotnet run
 
 ## Evolução do Projeto
 
-- Implementação do sistema centralizado de CombatLog
-- Modularização do fluxo de combate
-- Organização das etapas de turno
-- Centralização da execução de ações
-- Sistema isolado de aplicação de efeitos
-- Melhor separação entre fluxo, execução e logs
-- Redução de Console.WriteLine espalhados pelo sistema
+* Implementação do sistema centralizado de BattleLog
+* Modularização do fluxo de combate e turnos
+* Centralização da execução de ações e skills
+* Sistema de efeitos separado da execução principal
+* Adição de identidade visual própria para cada personagem
+* Criação do sistema de decisão contextual (`CharDecision`)
+* Implementação de avaliação estratégica de dano (`CalculateDamage`)
+* Separação entre cálculo de dano e execução de skills
+* Sistema inicial de comportamento autônomo para personagens
+* Melhoria na organização entre combate, logs e tomada de decisão
+
 
 ---
 
