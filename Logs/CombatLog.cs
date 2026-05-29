@@ -9,12 +9,14 @@ namespace CombatCore.Logs
     {
         public static void StartCombatLog(Character attacker, Character target)
         {
-            Console.WriteLine("========== TURNO ==========");
+            Thread.Sleep(1000);
+            Console.WriteLine("========== COMBATE ==========");
             Console.WriteLine($"{attacker.Icon} {attacker.Name} VS {target.Icon} {target.Name}");
-            Console.WriteLine("===========================");
+            Console.WriteLine("=============================");
+            Thread.Sleep(1000);
         }
 
-        public static (ISkill? skill, IAction? action) AttackTypeLog(Character player)
+        public static (IAction? action, ISkill? skill) AttackTypeLog(Character player)
         {
             string? input;
             string? choose;
@@ -44,7 +46,7 @@ namespace CombatCore.Logs
             {
                 case 1:
                     action = player.basicAttack;
-                    return (null, action);
+                    return (action, null);
                 case 2:
                     do
                     {
@@ -77,7 +79,7 @@ namespace CombatCore.Logs
 
                     number = int.Parse(choose);
                     choosenSkill = player.Skills[number - 1];
-                    return (choosenSkill, null);
+                    return (null, choosenSkill);
 
                 default:
                     Console.WriteLine("⚠️ Erro, tente novamente.");
@@ -94,12 +96,15 @@ namespace CombatCore.Logs
                     if (miss)
                     {
                         Console.WriteLine($"❌ {attacker.Name} errou o ataque!");
+                        Thread.Sleep(1000);
                         return;
                     }
                     else
                     {
                         Console.WriteLine($"💫 {target.Name} ficou atordoado!");
+                        Thread.Sleep(1000);
                         Console.WriteLine($"🩸 {attacker.Name} atacou causando {damage} de dano em {target.Name}!");
+                        Thread.Sleep(1000);
                         return;
                     }
                 }
@@ -108,19 +113,23 @@ namespace CombatCore.Logs
                     if (miss)
                     {
                         Console.WriteLine($"❌ {attacker.Name} errou o ataque!");
+                        Thread.Sleep(1000);
                         return;
                     }
                     else
                     {
                         Console.WriteLine($"🔥 {target.Name} foi queimado!");
+                        Thread.Sleep(1000);
 
                         if (crit)
                         {
                             Console.WriteLine($"💥 {attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage} de dano!");
+                            Thread.Sleep(1000);
                             return;
                         }
 
                         Console.WriteLine($"🩸 {attacker.Name} atacou causando {damage} de dano em {target.Name}!");
+                        Thread.Sleep(1000);
                         return;
                     }
                 }
@@ -129,36 +138,43 @@ namespace CombatCore.Logs
                     if (miss)
                     {
                         Console.WriteLine($"❌ {attacker.Name} errou o ataque!");
+                        Thread.Sleep(1000);
                         return;
                     }
                     else
                     {
                         Console.WriteLine($"☠️ {target.Name} foi envenenado!");
+                        Thread.Sleep(1000);
 
                         if (crit)
                         {
                             Console.WriteLine($"💥 {attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage} de dano!");
+                            Thread.Sleep(1000);
                             return;
                         }
 
                         Console.WriteLine($"🩸 {attacker.Name} atacou causando {damage} de dano em {target.Name}!");
+                        Thread.Sleep(1000);
                         return;
                     }
                 }
                 else if (skill.Name.Contains("❤️"))
                 {
                     Console.WriteLine($"❤️ {attacker.Name} se curou!");
+                    Thread.Sleep(1000);
                     return;
                 }
                 else
                 {
                     Console.WriteLine("⚠️ Erro ao usar skill.");
+                    Thread.Sleep(1000);
                     return;
                 }
             }
             else
             {
                 Console.WriteLine("⚠️ Erro ao exibir mensagem de skill.");
+                Thread.Sleep(1000);
                 return;
             }
         }
@@ -170,12 +186,14 @@ namespace CombatCore.Logs
 				if (miss)
 				{
 					Console.WriteLine($"❌ {attacker.Name} errou o ataque!");
-					return;
+                    Thread.Sleep(1000);
+                    return;
 				}
 				else
 				{
 					Console.WriteLine($"🩸 {attacker.Name} atacou causando {damage} de dano em {target.Name}!");
-					return;
+                    Thread.Sleep(1000);
+                    return;
 				}
 			}
 			else if (attacker._Class.Contains("Guerreiro"))
@@ -183,10 +201,12 @@ namespace CombatCore.Logs
 				if (crit)
 				{
 					Console.WriteLine($"💥 {attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage} de dano!");
-					return;
+                    Thread.Sleep(1000);
+                    return;
 				}
 
 				Console.WriteLine($"🩸 {attacker.Name} atacou causando {damage} de dano em {target.Name}!");
+                Thread.Sleep(1000);
 				return;				
 			}
 			else if (attacker._Class.Contains("Arqueiro"))
@@ -194,6 +214,7 @@ namespace CombatCore.Logs
 				if (miss)
 				{
 					Console.WriteLine($"❌ {attacker.Name} errou o ataque!");
+                    Thread.Sleep(1000);
 					return;
 				}
 				else
@@ -201,16 +222,19 @@ namespace CombatCore.Logs
 					if (crit)
 					{
 						Console.WriteLine($"💥 {attacker.Name} acertou um ataque crítico em {target.Name}! Causou {damage} de dano!");
+                        Thread.Sleep(1000);
 						return;
 					}
 
 					Console.WriteLine($"🩸 {attacker.Name} atacou causando {damage} de dano em {target.Name}!");
+                    Thread.Sleep(1000);
 					return;
 				}
 			}
 			else
 			{
 				Console.WriteLine("⚠️ Erro ao usar ataque básico.");
+                Thread.Sleep(1000);
 				return;
 			}
 
@@ -223,36 +247,43 @@ namespace CombatCore.Logs
                 if (effect.Name.Contains("Atordoamento"))
                 {
                     Console.WriteLine($"{target.Name} está atordoado! Dura uma rodada.");
+                    Thread.Sleep(1000);
                     return;
                 }
                 else if (effect.Name.Contains("Envenenamento"))
                 {
                     Console.WriteLine($"☠️ {target.Name} está envenenado por {turns} rodadas! Sofreu {damage} de dano.");
+                    Thread.Sleep(1000);
 
                     if (turns <= 0)
                     {
                         Console.WriteLine($"O efeito de envenenamento acabou.");
+                        Thread.Sleep(1000);
                         return;
                     }
                 }
                 else if (effect.Name.Contains("Queimadura"))
                 {
                     Console.WriteLine($"🔥 {target.Name} está queimando por {turns} rodadas! Sofreu {damage} de dano.");
+                    Thread.Sleep(1000);
 
                     if (turns <= 0)
                     {
                         Console.WriteLine($"O efeito de queimação acabou.");
+                        Thread.Sleep(1000);
                         return;
                     }
                 }
                 else if (effect.Name.Contains("Cura"))
                 {
                     Console.WriteLine($"❤️ {target.Name} se curou em {heal} pontos de vida.");
+                    Thread.Sleep(1000);
                     return;
                 }
                 else
                 {
                     Console.WriteLine("⚠️ Erro ao aplicar efeito.");
+                    Thread.Sleep(1000);
                     return;
                 }
             }
@@ -260,9 +291,10 @@ namespace CombatCore.Logs
 
         public static void StartShiftLog(Character attacker)
         {
+            Thread.Sleep(1000);
 			Console.Clear();
 			Console.WriteLine("================================");
-			Console.WriteLine($"TURNO DE {attacker.Name.ToUpper()}");
+			Console.WriteLine($"         TURNO DE {attacker.Name.ToUpper()}");
 			Console.WriteLine("================================");
 		}
 

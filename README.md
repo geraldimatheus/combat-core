@@ -1,94 +1,164 @@
 # ⚔️ CombatCore
 
-Sistema de combate RPG em turnos desenvolvido em C# com foco em Programação Orientada a Objetos (POO), arquitetura de software e separação de responsabilidades.
+Sistema de combate RPG em turnos desenvolvido em C# com foco em Programação Orientada a Objetos (POO), arquitetura de software, modularização e modelagem de sistemas de gameplay.
 
 ---
 
-## 📖 Sobre o projeto
+# 📖 Sobre o projeto
 
-O CombatCore começou como um projeto de treino em C# e evoluiu para uma estrutura modular de combate RPG baseada em turnos.
+O CombatCore começou como um projeto de treino em C# e evoluiu para um sistema modular de combate RPG baseado em turnos.
 
-O objetivo principal do projeto é praticar conceitos fundamentais e intermediários de desenvolvimento backend utilizando C# e .NET, aplicando arquitetura escalável e código organizado.
+O principal objetivo do projeto é praticar conceitos fundamentais e intermediários de desenvolvimento backend utilizando C# e .NET, aplicando organização de código, separação de responsabilidades e construção progressiva de sistemas escaláveis.
 
-Atualmente o projeto conta com:
-- Sistema de combate em turnos
-- Classes jogáveis
-- Skills especiais
-- Sistema de efeitos contínuos
-- Separação entre ações, habilidades e efeitos
-- Estrutura baseada em interfaces e herança
+Atualmente, o projeto possui:
+
+* Sistema completo de combate em turnos
+* Sistema modular de ações, habilidades e efeitos
+* Classes jogáveis com comportamentos distintos
+* Sistema de efeitos contínuos
+* Sistema contextual de tomada de decisão para IA
+* Estrutura baseada em interfaces, composição e herança
+* Organização arquitetural focada em escalabilidade
 
 ---
 
-## ⚙️ Funcionalidades
+# ⚙️ Funcionalidades
 
-### ⚔️ Sistema de combate
-- Combate em turnos
-- Ataques básicos
-- Skills especiais
-- Ataques críticos
-- Chance de erro
+## ⚔️ Sistema de combate
 
-### 🧙 Classes jogáveis
-- Guerreiro
-- Mago
-- Arqueiro
+* Combate baseado em turnos
+* Ataques básicos
+* Skills especiais
+* Ataques críticos
+* Chance de erro
+* Execução modular de combate
+* Fluxo centralizado de turnos
+
+---
+
+## 🧙 Classes jogáveis
+
+* Guerreiro
+* Mago
+* Arqueiro
 
 Cada classe possui:
-- Ataque básico próprio
-- Skills exclusivas
-- Regras específicas de combate
 
-### 🧪 Sistema de efeitos
-- Queimadura
-- Veneno
-- Atordoamento
-- Cura
+* Ataque básico próprio
+* Skills exclusivas
+* Comportamento estratégico diferente
+* Prioridades específicas de combate
+
+---
+
+## 🧪 Sistema de efeitos
+
+* Queimadura
+* Envenenamento
+* Atordoamento
+* Cura
 
 Os efeitos possuem:
-- Duração por turnos
-- Aplicação automática
-- Remoção automática ao terminar
+
+* Duração por turnos
+* Aplicação automática
+* Remoção automática
+* Processamento separado do fluxo principal de combate
 
 ---
 
-## 🎮 Demonstração
+## 🧠 Sistema de IA
 
-![Combat Demo](./assets/combat-demo.gif)
+O CombatCore possui um sistema inicial de tomada de decisão contextual para personagens controlados pela IA.
 
-## 🧱 Arquitetura do projeto
+Os personagens podem:
 
-O projeto foi organizado com foco em separação de responsabilidades.
+* Avaliar a própria vida
+* Avaliar a situação do inimigo
+* Escolher entre ataques básicos e habilidades
+* Priorizar dano, controle ou sobrevivência
+* Tomar decisões baseadas no estado atual do combate
 
-### Interfaces
-- `IAction` → ataques básicos
-- `ISkill` → habilidades especiais
-- `IEffect` → efeitos contínuos
+Atualmente:
 
-### Herança
-- `Character` é uma classe abstrata
-- Classes jogáveis herdam de `Character`
+* Guerreiros possuem comportamento mais agressivo
+* Arqueiros priorizam controle e atordoamento
+* Magos possuem comportamento mais imprevisível e focado em habilidades
 
-### Organização
-- Actions
-- Skills
-- Effects
-- Classes
-- Core do combate separado no `Program.cs`
+O sistema também possui:
 
----
-
-## 🛠️ Tecnologias utilizadas
-
-- C#
-- .NET
-- Console Application
-- Git
-- GitHub
+* Avaliação estratégica de dano
+* Escolha automática de habilidades
+* Separação entre cálculo estratégico e execução real de ações
 
 ---
 
-## 📂 Estrutura do projeto
+# 🎮 Demonstração
+
+---![Combat Demo](./assets/combat-demo.gif)
+
+# 🧱 Arquitetura do projeto
+
+O projeto foi organizado com foco em modularização e separação de responsabilidades.
+
+## Interfaces
+
+* `IAction` → ataques básicos
+* `ISkill` → habilidades especiais
+* `IEffect` → efeitos contínuos
+
+---
+
+## Entidades principais
+
+### `Character`
+
+Responsável por:
+
+* Estado do personagem
+* Vida e atributos
+* Inventário de skills
+* Efeitos ativos
+* Sistema de decisão contextual
+* Avaliação estratégica de ações
+
+---
+
+### `CombatLog`
+
+Responsável por:
+
+* Exibição visual do combate
+* Logs de ações
+* Logs de habilidades
+* Logs de efeitos
+* Feedback visual do sistema
+
+---
+
+### `Program`
+
+Responsável por:
+
+* Fluxo principal da batalha
+* Controle de turnos
+* Execução do combate
+* Coordenação geral do sistema
+
+---
+
+## Organização de módulos
+
+* Actions
+* Skills
+* Effects
+* Logs
+* Classes
+* Core do combate
+
+---
+
+# 📂 Estrutura do projeto
 
 ```bash
 CombatCore/
@@ -109,10 +179,12 @@ CombatCore/
 │
 ├── Skills/
 │   ├── ISkill.cs
-│   ├── FireSword.cs
-│   ├── PoisonSword.cs
-│   ├── StunSword.cs
-│   └── ...
+│   ├── ArrowSkills/
+│   ├── MagicSkills/
+│   └── SwordSkills/
+│
+├── Logs/
+│   └── CombatLog.cs
 │
 ├── Classes/
 │   ├── Warrior.cs
@@ -121,24 +193,38 @@ CombatCore/
 │
 ├── Character.cs
 ├── Program.cs
-├── CombatCore.csproj
 └── README.md
 ```
 
 ---
 
-## 🚀 Como executar
+# 🛠️ Tecnologias utilizadas
 
-### Pré-requisitos
-- .NET SDK instalado
+* C#
+* .NET
+* Console Application
+* Git
+* GitHub
 
-### Clonando o projeto
+---
+
+# 🚀 Como executar
+
+## Pré-requisitos
+
+* .NET SDK instalado
+
+---
+
+## Clonando o projeto
 
 ```bash
 git clone https://github.com/geraldimatheus/combat-core.git
 ```
 
-### Executando
+---
+
+## Executando
 
 ```bash
 cd combat-core
@@ -147,59 +233,66 @@ dotnet run
 
 ---
 
-## 📚 Conceitos praticados
+# 📚 Conceitos praticados
 
-- Programação Orientada a Objetos
-- Encapsulamento
-- Interfaces
-- Polimorfismo
-- Herança
-- Classes abstratas
-- Composição
-- Listas Genéricas
-- Arquitetura de software
-- Separação de responsabilidades
-- Organização de namespaces
-- Estruturação de sistemas escaláveis
-- Lógica de combate RPG
-
----
-
-## Evolução do Projeto
-
-* Implementação do sistema centralizado de BattleLog
-* Modularização do fluxo de combate e turnos
-* Centralização da execução de ações e skills
-* Sistema de efeitos separado da execução principal
-* Adição de identidade visual própria para cada personagem
-* Criação do sistema de decisão contextual (`CharDecision`)
-* Implementação de avaliação estratégica de dano (`CalculateDamage`)
-* Separação entre cálculo de dano e execução de skills
-* Sistema inicial de comportamento autônomo para personagens
-* Melhoria na organização entre combate, logs e tomada de decisão
-
+* Programação Orientada a Objetos
+* Encapsulamento
+* Interfaces
+* Herança
+* Classes abstratas
+* Composição
+* Organização de namespaces
+* Modularização de sistemas
+* Arquitetura de software
+* Separação de responsabilidades
+* Sistemas baseados em turnos
+* Modelagem de gameplay
+* IA baseada em comportamento contextual
+* Avaliação estratégica de ações
+* Estruturação de sistemas escaláveis
 
 ---
 
-## 🔮 Melhorias futuras
+# 📈 Evolução do Projeto
 
-- Sistema de inventário
-- Sistema de mana
-- Sistema de níveis
-- Equipamentos
-- IA para inimigos
-- Persistência de save
-- Interface gráfica
-- Multiplayer local
-- Novas classes
-- Mais habilidades e efeitos
+## Principais evoluções implementadas
+
+* Modularização do sistema de combate
+* Separação entre ações, habilidades e efeitos
+* Implementação de sistema centralizado de logs
+* Sistema automático de efeitos contínuos
+* Sistema contextual de IA para combate
+* Integração da IA ao fluxo principal da batalha
+* Diferenciação comportamental entre classes
+* Sistema de avaliação estratégica de dano
+* Separação entre cálculo e execução de habilidades
+* Melhorias estruturais no pipeline de turnos
+* Organização progressiva da arquitetura do projeto
 
 ---
 
-## 👨‍💻 Autor
+# 🔮 Melhorias futuras
+
+* Sistema de inventário
+* Sistema de mana
+* Sistema de níveis
+* Equipamentos
+* Sistema de atributos
+* Persistência de save
+* Interface gráfica
+* Multiplayer local
+* Novas classes
+* Novos efeitos e habilidades
+* Especialização comportamental por classe
+* Refatoração do sistema de decisão usando polimorfismo
+
+---
+
+# 👨‍💻 Autor
 
 Projeto desenvolvido por Matheus Geraldi como parte dos estudos em C# e desenvolvimento de sistemas.
 
-### 📫 Contato
-- LinkedIn: https://www.linkedin.com/in/geraldimatheus/
-- GitHub: https://github.com/geraldimatheus
+## 📫 Contato
+
+* LinkedIn: https://www.linkedin.com/in/geraldimatheus/
+* GitHub: https://github.com/geraldimatheus

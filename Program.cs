@@ -43,6 +43,7 @@ void ExecuteChoices(Character attacker, Character target, ISkill? Skill, IAction
 
 void Shift(Character attacker, Character target, ISkill? skill, IAction? action)
 {
+    Thread.Sleep(1000);
     CombatLog.StartShiftLog(attacker);
     if (skill is HealSkill)
         ApplyEffects(attacker);
@@ -51,6 +52,7 @@ void Shift(Character attacker, Character target, ISkill? skill, IAction? action)
     Thread.Sleep(1000);
 
     CombatLog.IsDeadLog(target);
+    Thread.Sleep(1000);
     ExecuteChoices(attacker, target, skill, action);
     Thread.Sleep(1000);
 
@@ -64,12 +66,12 @@ void Fight(Character attacker, Character target)
     CombatLog.StartCombatLog(attacker, target);
     while (!attacker.IsDead() && !target.IsDead())
     {
-        var result = CombatLog.AttackTypeLog(attacker);
+        var result = attacker.CharDecision(target);
         Shift(attacker, target, result.skill, result.action);
         if (target.IsDead())
             break;
 
-        result = CombatLog.AttackTypeLog(target);
+        result = target.CharDecision(attacker);
         Shift(target, attacker, result.skill, result.action);
         if (attacker.IsDead())
             break;

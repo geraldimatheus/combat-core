@@ -157,50 +157,51 @@ namespace CombatCore
             ISkill? skill = null;
             if (hp < (maxHP / 2 - 10))
             {
-                bool healskill = rand.Next(0, 100) < 50;
-                if (healskill)
+                if (this._Class == "Guerreiro" && target.hp < (target.MaxHP / 2 - 10))
+                    return (basicAttack, skill);
+                else if (this._Class == "Guerreiro")
                     return (action, new HealSkill());
 
-                bool stunskill = rand.Next(0, 100) > 50;
-                if (stunskill)
+                if (this._Class == "Arqueiro")
                 {
-                    switch (this._Class)
-                    {
-                        case "Mago":
-                            return (action, new MagicStun());
-                        case "Guerreiro":
-                            return (action, new StunSword());
-                        case "Arqueiro":
-                            return (action, new StunArrow());
-                    }
+                    bool stunskill = rand.Next(0, 100) > 40;
+                    if (stunskill)
+                        return (action, new StunArrow());
+                    else
+                        return (action, new HealSkill());
                 }
 
-                return (action, skill);
+                return (action, new HealSkill());
             }
 
             if (target.hp < (target.MaxHP / 2 - 10))
             {
-                if (target.Effects != null && target.Effects.Count != 0)
-                { 
-                    action = basicAttack;
-                    return (action, skill);
-                }
-                else
+                if (this._Class == "Guerreiro")
                 {
-                    skill = StrongestSkill();
-                    return (action, skill);
+                    bool useSkill = rand.Next(0, 100) > 70;
+                    if (useSkill)
+                        return (action, StrongestSkill());
+                    else
+                        return (basicAttack, skill);
                 }
+
+                if (target.Effects.Count != 0)
+                    return (basicAttack, skill);
+                else
+                    return (action, StrongestSkill());
             }
 
-            if (target.Effects != null && target.Effects.Count != 0)
+            if (target.Effects.Count != 0)
             {
                 action = basicAttack;
                 return (action, skill);
             }
             else
             {
-                skill = StrongestSkill();
-                return (action, skill);
+                if (this._Class == "Arqueiro")
+                    return (action, new StunArrow());
+
+                return (action, StrongestSkill());
             }
         }
 
