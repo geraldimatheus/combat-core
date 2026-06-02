@@ -298,13 +298,17 @@ namespace CombatCore.Logs
 			Console.WriteLine("================================");
 		}
 
-        public static void IsDeadLog(Character target)
+        public static bool IsDeadLog(Character target)
         {
 			if (target.IsDead())
 			{
-				Console.WriteLine($"☠️ {target.Name} morreu!");
-				return;
+                Console.WriteLine($"☠️ {target.Name} morreu!");
+                Thread.Sleep(1000);
+                Console.Clear();
+                return true;
 			}
+
+            return false;
 		}
 	}
 }

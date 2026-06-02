@@ -153,6 +153,13 @@ namespace CombatCore
 
         public (IAction? action, ISkill? skill) CharDecision(Character target)
         {
+            /*
+            Características por classe:
+            - Guerreiro: Agressivo (Alvo fraco - finaliza)
+            - Arqueiro: Foca em stun (caso o alvo não tenha efeitos/esteja com pouca vida)
+            - Mago: Foca em skills (com pouca vida, se cura ao invés de atacar)
+            */
+
             IAction? action = null;
             ISkill? skill = null;
             if (hp < (maxHP / 2 - 10))
@@ -192,10 +199,7 @@ namespace CombatCore
             }
 
             if (target.Effects.Count != 0)
-            {
-                action = basicAttack;
-                return (action, skill);
-            }
+                return (basicAttack, skill);
             else
             {
                 if (this._Class == "Arqueiro")

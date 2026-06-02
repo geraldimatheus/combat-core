@@ -41,14 +41,20 @@ void ExecuteChoices(Character attacker, Character target, ISkill? Skill, IAction
         Console.WriteLine("⚠️ Erro ao executar ações");
 }
 
+
+
 void Shift(Character attacker, Character target, ISkill? skill, IAction? action)
 {
     Thread.Sleep(1000);
     CombatLog.StartShiftLog(attacker);
     if (skill is HealSkill)
+    {
         ApplyEffects(attacker);
+        CombatLog.IsDeadLog(target);
+    }
     else
         ApplyEffects(target);
+    CombatLog.IsDeadLog(target);
     Thread.Sleep(1000);
 
     CombatLog.IsDeadLog(target);
@@ -66,14 +72,18 @@ void Fight(Character attacker, Character target)
     CombatLog.StartCombatLog(attacker, target);
     while (!attacker.IsDead() && !target.IsDead())
     {
+        if (CombatLog.IsDeadLog(target))
+            break;
         var result = attacker.CharDecision(target);
         Shift(attacker, target, result.skill, result.action);
-        if (target.IsDead())
+        if (CombatLog.IsDeadLog(target))
             break;
 
+        if (CombatLog.IsDeadLog(attacker))
+            break;
         result = target.CharDecision(attacker);
         Shift(target, attacker, result.skill, result.action);
-        if (attacker.IsDead())
+        if (CombatLog.IsDeadLog(attacker))
             break;
     }
 }
@@ -82,9 +92,19 @@ List<Character> characters = new List<Character>()
 {
     new WarriorClass("Guts"),
     new MageClass("Strange"),
-    new ArcherClass("Usopp")
+    new ArcherClass("Usopp"),
+    new WarriorClass("Zoro"),
+    new MageClass("Natsu"),
+    new ArcherClass("Yasopp")
 };
 
 Character guts = characters[0];
+Character strange = characters[1];
 Character usopp = characters[2];
-Fight(guts, usopp);
+Character zoro = characters[3];
+Character natsu = characters[4];
+Character yasopp = characters[5];
+
+Fight(strange, natsu);
+Fight(strange, natsu);
+Fight(strange, natsu);
