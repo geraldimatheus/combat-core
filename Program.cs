@@ -12,7 +12,6 @@ void ApplyEffects(Character player)
     {
         IEffect effect = effects[i];
         var value = effects[i].EffectAction(player);
-        player.ReceiveHeal(value.heal);
         CombatLog.EffectsLog(player, effect, value.damage, value.heal, value.turns);
         if (value.turns == 0)
             effects.Remove(effects[i]);
@@ -47,22 +46,20 @@ void Shift(Character attacker, Character target, ISkill? skill, IAction? action)
 {
     Thread.Sleep(1000);
     CombatLog.StartShiftLog(attacker);
-    if (skill is HealSkill)
-    {
-        ApplyEffects(attacker);
-        CombatLog.IsDeadLog(target);
-    }
-    else
-        ApplyEffects(target);
+
+    ApplyEffects(target);
+
     CombatLog.IsDeadLog(target);
     Thread.Sleep(1000);
 
     CombatLog.IsDeadLog(target);
     Thread.Sleep(1000);
+
     ExecuteChoices(attacker, target, skill, action);
-    Thread.Sleep(1000);
 
-    CombatLog.IsDeadLog(target);
+    Thread.Sleep(1000);
+    CombatLog.IsDeadLog(target)
+        ;
     attacker.ShowStatus();
     target.ShowStatus();
 }

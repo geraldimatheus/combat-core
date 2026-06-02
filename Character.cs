@@ -1,17 +1,8 @@
 ﻿using CombatCore.Actions;
-using CombatCore.Actions.ArcherActions;
-using CombatCore.Actions.MageActions;
-using CombatCore.Actions.WarriorActions;
-using CombatCore.Classes;
 using CombatCore.Effects;
 using CombatCore.Skills;
 using CombatCore.Skills.ArrowSkills;
-using CombatCore.Skills.MagicSkills;
-using CombatCore.Skills.SwordSkills;
-using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace CombatCore
@@ -133,26 +124,72 @@ namespace CombatCore
             return 0;
         }
 
-        private ISkill? StrongestSkill()
+        public int CalculateEffectDamage(Character target, ISkill skill)
         {
-            ISkill? _strongestSkill = null;
-            int skilldamage = 0;
-
-            foreach (ISkill s in Skills)
+            if (skill != null)
             {
-                int _currentDamage = this.CalculateDamage(null, s);
-                if (_currentDamage > skilldamage)
-                {
-                    skilldamage = _currentDamage;
-                    _strongestSkill = s;
-                }
+                if (skill.Name.Contains("🔥"))
+                    return (2 * (target.MaxHP * 5) / 100);
+                if (skill.Name.Contains("☠️"))
+                    return (3 * (target.MaxHP * 4) / 100);
+                else
+                    return 0;
             }
 
-            return _strongestSkill;
+            return 0;
         }
 
         public (IAction? action, ISkill? skill) CharDecision(Character target)
         {
+            static bool IsTargetWeak(Character target)
+            {
+                if (target.hp <= (target.MaxHP / 2 - 10))
+                    return true;
+                return false;
+            }
+
+            bool IsPlayerWeak()
+            {
+                if (hp <= (MaxHP / 2 - 10))
+                    return true;
+                return false;
+            }
+
+            ISkill? StrongestSkill()
+            {
+                ISkill? _strongestSkill = null;
+                int skilldamage = 0;
+
+                foreach (ISkill s in Skills)
+                {
+                    int _currentDamage = this.CalculateDamage(null, s);
+                    if (_currentDamage > skilldamage)
+                    {
+                        skilldamage = _currentDamage;
+                        _strongestSkill = s;
+                    }
+                }
+
+                return _strongestSkill;
+            }
+
+            ISkill? GetMostEffectiveSkill()
+            {
+                ISkill? _mostEffectiveSkill = null;
+                int effectDamage = 0;
+
+                foreach (ISkill s in Skills)
+                {
+                    int _currentDamage = CalculateEffectDamage(target, s);
+                    if (_currentDamage > effectDamage)
+                    {
+                        effectDamage = _currentDamage;
+                        _mostEffectiveSkill = s;
+                    }
+                }
+                return _mostEffectiveSkill;
+            }
+
             /*
             Características por classe:
             - Guerreiro: Agressivo (Alvo fraco - finaliza)
@@ -162,9 +199,9 @@ namespace CombatCore
 
             IAction? action = null;
             ISkill? skill = null;
-            if (hp < (maxHP / 2 - 10))
+            if (IsPlayerWeak())
             {
-                if (this._Class == "Guerreiro" && target.hp < (target.MaxHP / 2 - 10))
+                if (this._Class == "Guerreiro" && IsTargetWeak(target))
                     return (basicAttack, skill);
                 else if (this._Class == "Guerreiro")
                     return (action, new HealSkill());
@@ -181,11 +218,11 @@ namespace CombatCore
                 return (action, new HealSkill());
             }
 
-            if (target.hp < (target.MaxHP / 2 - 10))
+            if (IsTargetWeak(target))
             {
                 if (this._Class == "Guerreiro")
                 {
-                    bool useSkill = rand.Next(0, 100) > 70;
+                    bool useSkill = rand.Next(0, 100) > 60;
                     if (useSkill)
                         return (action, StrongestSkill());
                     else
@@ -197,15 +234,23 @@ namespace CombatCore
                 else
                     return (action, StrongestSkill());
             }
-
-            if (target.Effects.Count != 0)
-                return (basicAttack, skill);
             else
             {
-                if (this._Class == "Arqueiro")
-                    return (action, new StunArrow());
+                if (target.Effects.Count != 0)
+                    return (basicAttack, skill);
+                else
+                {
+                    if (this._Class == "Arqueiro")
+                    {
+                        bool stunskill = rand.Next(0, 100) > 60;
+                        if (stunskill)
+                            return (action, new StunArrow());
+                        else
+                            return (action, GetMostEffectiveSkill());
+                    }
 
-                return (action, StrongestSkill());
+                    return (action, GetMostEffectiveSkill());
+                }
             }
         }
 

@@ -7,8 +7,9 @@ namespace CombatCore.Effects
     class BurnEffect : IEffect
     {
         public string Name { get { return "Queimadura"; } }
+        public int InitialTurns => 2;
 
-        int turns = 3;
+        int turns = 2;
         public (int damage, int heal, int turns) EffectAction(Character target)
         {
             int damage = ((target.MaxHP * 5) / 100);

@@ -8,10 +8,12 @@ namespace CombatCore.Effects
     {
         public string Name { get { return "Envenenamento"; } }
 
+        public int InitialTurns => 3;
+
         int turns = 3;
         public (int damage, int heal, int turns) EffectAction(Character target)
         {
-            int damage = ((target.MaxHP * 3) / 100);
+            int damage = ((target.MaxHP * 4) / 100);
             target.ReceiveDamage(damage);
             turns--;
 
